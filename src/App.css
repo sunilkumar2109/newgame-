@@ -1,178 +1,136 @@
-body, html, .app {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  color: white;
-  text-align: center;
-  background-color: black;
-}
-
-.bgVideo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  object-fit: cover;
-  z-index: -1;
-}
-
-.content {
-  padding: 40px 20px;
-  position: relative;
-  z-index: 1;
-}
-
-button {
-  padding: 10px 25px;
-  font-size: 16px;
-  margin-bottom: 30px;
-  border: none;
-  background: #fff;
-  color: #333;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.grid {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin: 20px 0;
-}
-
-.card {
-  background: rgba(255,255,255,0.1);
-  padding: 15px;
-  border-radius: 10px;
-  width: 150px;
-}
-
-.card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.faq {
-  text-align: left;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-.auth-box {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 10px;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.auth-box input {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.auth-box button {
-  padding: 8px;
-  flex: 1;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #000;
-  cursor: pointer;
-}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body, html, #root {
+html, body, #root {
   height: 100%;
   font-family: 'Segoe UI', sans-serif;
-}
-
-.container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+  background: transparent;
+  color: white;
   overflow: hidden;
 }
 
+/* 🎥 Background */
 .bg-video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  position: fixed;              /* ✅ Stays fixed behind content */
   top: 0;
   left: 0;
-  z-index: -1;
+  width: 100vw;                 /* ✅ Full screen width */
+  height: 100vh;                /* ✅ Full screen height */
+  object-fit: cover;            /* ✅ Cover the entire screen */
+  z-index: -1;                  /* ✅ Push behind all elements */
+  pointer-events: none;        /* ✅ Prevents blocking clicks */
 }
 
-.overlay {
-  height: 100%;
+
+/* 🔝 Top Bar */
+.top-bar {
+  position: absolute;
+  top: 20px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 40px;
+  align-items: center;
+  z-index: 10;
+}
+.logo {
+  font-size: 60px;
+  font-weight: bold;
+  color: #facc15;
+  margin: 0 auto;
+}
+
+/* 🎮 Center Text */
+.center-text {
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-align: center;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+.center-text h1 {
+  font-size: 50px;
+  font-weight: 700;
+}
+.center-text p {
+  margin-top: 10px;
+  font-size: 30px;
+  color: #eee;
+}
+.highlight {
+  color: #facc15;
+}
+
+/* 🔘 Auth Buttons */
+.auth-buttons button {
+  margin-left: 10px;
+  padding: 10px 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  background: #facc15;
+  color: black;
+  cursor: pointer;
+}
+
+/* 🪟 Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.4); /* subtle dark overlay */
+  z-index: 20;
 }
-
-.brand {
-  color: #fbbf24; /* gold color */
-}
-
-.login-box {
-  margin-top: 20px;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 25px;
+.modal-box {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 30px;
   border-radius: 12px;
-  width: 300px;
+  width: 350px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  position: relative;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
-
-.login-box input {
+.modal-box h2 {
+  margin-bottom: 8px;
+}
+.modal-box input {
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: none;
-  font-size: 14px;
 }
-
-.buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.login-box button {
+.modal-box button {
   padding: 10px;
-  font-size: 14px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  border-radius: 6px;
   background: white;
   color: black;
   font-weight: bold;
+  cursor: pointer;
 }
-
-.login-box p {
-  margin: 10px 0;
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  color: white;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
 }

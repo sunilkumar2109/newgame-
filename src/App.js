@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import {
   signInWithPopup,
@@ -10,11 +10,26 @@ import { auth, provider } from './firebase';
 function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [isSignup, setIsSignup] = useState(true);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  // ✅ List of background videos (must be in public/)
+  const videoList = ["/bg.mp4", "/bg1.mp4"];
+
+  // ✅ Change background video every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videoList.length);
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleGoogleLogin = () => {
     signInWithPopup(auth, provider)
       .then((res) => alert(`Welcome ${res.user.displayName}`))
-      .catch((err) => alert('Google Login Failed'));
+      .catch(() => alert('Google Login Failed'));
   };
 
   const handleEmailLogin = () => {
@@ -30,39 +45,58 @@ function App() {
   };
 
   return (
-   <div className="container">
-      <video autoPlay muted loop className="bg-video">
-        <source src="bg.mp4" type="video/mp4" />
+    <div className="container">
+      {/* 🎥 Background Video */}
+      <video key={videoList[currentVideoIndex]} autoPlay loop muted className="bg-video">
+        <source src={videoList[currentVideoIndex]} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      <div className="overlay">
-        <h1>Welcome to <span className="brand">GameEarn</span></h1>
-        <p>Pay and Play Games – Win Real Coins 💰</p>
-
-        <div className="login-box">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div className="buttons">
-            <button onClick={handleEmailSignup}>Sign Up</button>
-            <button onClick={handleEmailLogin}>Login</button>
-          </div>
-          <p>OR</p>
-          <button onClick={handleGoogleLogin}>Login with Google</button>
+      {/* 🔝 Top Bar */}
+      <div className="top-bar">
+        <div className="logo">GamePro</div>
+        <div className="auth-buttons">
+          <button onClick={() => { setShowModal(true); setIsSignup(true); }}>Sign Up</button>
+          <button onClick={() => { setShowModal(true); setIsSignup(false); }}>Login</button>
         </div>
       </div>
-    </div>
 
+      {/* 📣 Welcome Text */}
+      <div className="center-text">
+        <h1>Welcome to <span className="highlight">GameEarn</span></h1>
+        <p>Play Games, Win Coins, and Level Up Your Earnings 🚀</p>
+      </div>
+
+      {/* 💬 Modal */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h2>{isSignup ? "Sign Up" : "Login"}</h2>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div className="buttons">
+              {isSignup ? (
+                <button onClick={handleEmailSignup}>Create Account</button>
+              ) : (
+                <button onClick={handleEmailLogin}>Login</button>
+              )}
+              <button onClick={handleGoogleLogin}>Login with Google</button>
+            </div>
+            <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
