@@ -15,7 +15,7 @@ function App() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   // ✅ List of background videos (must be in public/)
-  const videoList = ["/bg.mp4", "/bg1.mp4"];
+  const videoList = ["/bg.mp4", "/bg1.mp4","/bg2.mov"];
 
   // ✅ Change background video every 10 seconds
   useEffect(() => {

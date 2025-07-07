@@ -4,12 +4,17 @@
   box-sizing: border-box;
 }
 
+
 html, body, #root {
   height: 100%;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+
   background: transparent;
   color: white;
   overflow: hidden;
+}
+h1, h2, h3 {
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* 🎥 Background */

@@ -7,7 +7,7 @@ import {
 } from 'firebase/auth';
 import { auth, provider } from './firebase';
 
-const videos = ['/bg.mp4', '/bg1.mp4']; // ✅ video list
+const videos = ['/bg.mp4', '/bg1.mp4','/bg2.mov']; // ✅ video list
 
 function App() {
   const [email, setEmail] = useState('');
@@ -97,7 +97,7 @@ function App() {
     </div>
     
        
-    </div>
+    
 
   );
 }
