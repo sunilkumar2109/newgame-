@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LandingPage.css';
+import Gameapp from './Gameapp';
 import {
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -17,6 +18,7 @@ function LandingPage() {
   const [showModal, setShowModal] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,6 +45,7 @@ function LandingPage() {
     signInWithPopup(auth, provider)
       .then(async (res) => {
         await createUserDataInFirestore(res.user.uid, res.user.email);
+        setUser(res.user);
         alert(`Welcome ${res.user.displayName}`);
         navigate('/dashboard');
       })
@@ -51,8 +54,10 @@ function LandingPage() {
 
   const handleEmailLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        alert(`Logged in as ${user.user.email}`);
+      .then((userCredential) => {
+        const loggedInUser = userCredential.user;
+        setUser(loggedInUser);
+        alert(`Logged in as ${loggedInUser.email}`);
         navigate('/dashboard');
       })
       .catch((err) => alert('Email Login Failed: ' + err.message));
@@ -60,9 +65,11 @@ function LandingPage() {
 
   const handleEmailSignup = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(async (user) => {
-        await createUserDataInFirestore(user.user.uid, user.user.email);
-        alert(`Account created for ${user.user.email}`);
+      .then(async (userCredential) => {
+        const newUser = userCredential.user;
+        await createUserDataInFirestore(newUser.uid, newUser.email);
+        setUser(newUser);
+        alert(`Account created for ${newUser.email}`);
         navigate('/dashboard');
       })
       .catch((err) => alert('Signup Failed: ' + err.message));
@@ -116,6 +123,11 @@ function LandingPage() {
           </div>
         </div>
       )}
+
+      {/* Gameapp content moved to bottom with white background */}
+      <div className="gameapp-section">
+        <Gameapp user={user} />
+      </div>
     </div>
   );
 }
